@@ -105,7 +105,7 @@ def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
                 res.raise_for_status()
             except requests.exceptions.RequestException as e:
                 logging.error(f"Error submitting to queue: {e}")
-                return create_http_response("Error submitting to queue", 500)
+                #return create_http_response("Error submitting to queue", 500)
 
         return create_http_response(response, status_code)
 
