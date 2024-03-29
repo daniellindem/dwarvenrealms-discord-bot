@@ -194,13 +194,14 @@ def send_discord_followup(request_body, content):
         #logging.info(f"URL: {url}")
         logging.info(f"Content: {content}")
         #logging.info(f"Body type: {type(body)}")
-        #logging.info(f"Body: {body}")
+        logging.info(f"Body: {body}")
 
         # Check for HTTP errors
         response.raise_for_status()
 
     except requests.exceptions.RequestException as e:
         logging.error(f"Error sending Discord follow-up: {e}")
+        return f"Error sending Discord follow-up: {e}"
         
         
 def interact(raw_request):
