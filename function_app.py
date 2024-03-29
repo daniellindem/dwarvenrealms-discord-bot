@@ -40,7 +40,7 @@ def signature_verification(req: func.HttpRequest) -> bool:
                 logging.error("Signature is invalid")
                 return False
         else:
-            logging.error("Missing required headers or body.")
+            #logging.error("Missing required headers or body.")
             return False
     except Exception as e:
         logging.error(f"Error verifying signature: {e}")
@@ -82,7 +82,7 @@ def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
             return create_http_response("Invalid request signature", 401)
 
         req_body = req.get_json()
-        logging.debug(f"Request body: {req_body}")
+        #logging.debug(f"Request body: {req_body}")
 
         if req_body["type"] == 1:
             response = {"type": 1}
@@ -101,13 +101,14 @@ def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             }
-
-            try:
-                res = requests.post(url, headers=headers, json=req_body, timeout=1)
-                res.raise_for_status()
-            except requests.exceptions.RequestException as e:
-                logging.error(f"Error submitting to queue: {e}")
-                return create_http_response("Error submitting to queue", 500)
+            requests.post(url, headers=headers, json=req_body, timeout=1)
+            #res.raise_for_status()
+            #try:
+            #    res = requests.post(url, headers=headers, json=req_body, timeout=1)
+            #    res.raise_for_status()
+            #except requests.exceptions.RequestException as e:
+            #    logging.error(f"Error submitting to queue: {e}")
+            #    return create_http_response("Error submitting to queue", 500)
 
         return create_http_response(response, status_code)
 
@@ -190,10 +191,10 @@ def send_discord_followup(request_body, content):
         response = requests.patch(url, headers=headers, data=body)
         logging.info(f"Response status code: {response.status_code}")
         logging.info(f"Response content: {response.text}")
-        logging.info(f"URL: {url}")
+        #logging.info(f"URL: {url}")
         logging.info(f"Content: {content}")
-        logging.info(f"Body type: {type(body)}")
-        logging.info(f"Body: {body}")
+        #logging.info(f"Body type: {type(body)}")
+        #logging.info(f"Body: {body}")
 
         # Check for HTTP errors
         response.raise_for_status()
@@ -204,7 +205,7 @@ def send_discord_followup(request_body, content):
         
 def interact(raw_request):
     try:
-        logging.info("Processing body: %s", raw_request)
+        #logging.info("Processing body: %s", raw_request)
         data = raw_request.get("data", {})
         command_name = data.get("name", "")
 
@@ -241,7 +242,7 @@ def dr_discord_bot_interaction_handler(req: func.HttpRequest) -> func.HttpRespon
             return create_http_response('Warmed up', status_code=200)
 
         raw_req = req.get_json()
-        logging.info(f"Received request body: {raw_req}")
+        #logging.info(f"Received request body: {raw_req}")
 
         content = interact(raw_req)
         logging.info(f"Interaction result: {content}")
