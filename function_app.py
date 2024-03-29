@@ -2,6 +2,7 @@ import azure.functions as func
 import requests
 import logging
 import os
+import math
 import json
 from discord_interactions import verify_key
 from googleapiclient.discovery import build
@@ -72,6 +73,7 @@ def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
         
         # Verify request signature
         if req.get_json()['type'] == 'warmup':
+            logging.info('Received warmup request.')
             response = 'Warmed up'
             status_code = 200
             return create_http_response(response, status_code)
@@ -105,7 +107,7 @@ def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
                 res.raise_for_status()
             except requests.exceptions.RequestException as e:
                 logging.error(f"Error submitting to queue: {e}")
-                #return create_http_response("Error submitting to queue", 500)
+                return create_http_response("Error submitting to queue", 500)
 
         return create_http_response(response, status_code)
 
