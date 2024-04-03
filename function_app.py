@@ -101,7 +101,10 @@ def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             }
-            requests.post(url, headers=headers, json=req_body, timeout=1)
+    except Exception as e:
+        logging.error(f"Unexpected error in base function: {e}")
+        return create_http_response("Internal server error", 500)
+    requests.post(url, headers=headers, json=req_body, timeout=1)
             #res.raise_for_status()
             #try:
             #    res = requests.post(url, headers=headers, json=req_body, timeout=1)
@@ -109,14 +112,7 @@ def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
             #except requests.exceptions.RequestException as e:
             #    logging.error(f"Error submitting to queue: {e}")
             #    return create_http_response("Error submitting to queue", 500)
-            return create_http_response(response, status_code)
-
-        
-
-    except Exception as e:
-        logging.error(f"Unexpected error in base function: {e}")
-        return create_http_response(response, status_code)
-        #return create_http_response("Internal server error", 500)
+    return create_http_response(response, status_code)
     
 
 
