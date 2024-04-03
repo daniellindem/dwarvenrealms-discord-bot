@@ -63,6 +63,7 @@ def validate_headers(req: func.HttpRequest):
         return func.HttpResponse("Internal server error", status_code=500)
 
 def create_http_response(content, status_code, mimetype="application/json"):
+    logging.info (f"Creating HTTP response with status code {status_code}")
     return func.HttpResponse(json.dumps(content), status_code=status_code, mimetype=mimetype)
 
 app = func.FunctionApp()
@@ -104,14 +105,8 @@ def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
     except Exception as e:
         logging.error(f"Unexpected error in base function: {e}")
         return create_http_response("Internal server error", 500)
+    logging.info(f"Got here")
     requests.post(url, headers=headers, json=req_body, timeout=1)
-            #res.raise_for_status()
-            #try:
-            #    res = requests.post(url, headers=headers, json=req_body, timeout=1)
-            #    res.raise_for_status()
-            #except requests.exceptions.RequestException as e:
-            #    logging.error(f"Error submitting to queue: {e}")
-            #    return create_http_response("Error submitting to queue", 500)
     return create_http_response(response, status_code)
     
 
