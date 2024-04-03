@@ -179,6 +179,7 @@ def rupturecalc(rupturelevel, rerollcost, service):
 def send_discord_followup(request_body, content):
     try:
         logging.info("Starting to send Discord follow-up")
+        logging.warning(f"Request body: {request_body}")
 
         # Construct the URL for sending the follow-up message
         url = f"https://discord.com/api/v10/webhooks/{request_body['application_id']}/{request_body['token']}/messages/@original"
