@@ -69,42 +69,42 @@ def create_http_response(content, status_code, mimetype="application/json"):
 app = func.FunctionApp()
 @app.route(route="dr_discord_bot_handler", auth_level=func.AuthLevel.FUNCTION)
 def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
-    try:
-        logging.info('Python HTTP trigger function processed a request.')
-        
-        # Verify request signature
-        if req.get_json()['type'] == 'warmup':
-            logging.info('Received warmup request.')
-            response = 'Warmed up'
-            status_code = 200
-            return create_http_response(response, status_code)
-        elif not signature_verification(req):
-            logging.warning("Invalid request signature")
-            return create_http_response("Invalid request signature", 401)
+    #try:
+    logging.info('Python HTTP trigger function processed a request.')
+    
+    # Verify request signature
+    if req.get_json()['type'] == 'warmup':
+        logging.info('Received warmup request.')
+        response = 'Warmed up'
+        status_code = 200
+        return create_http_response(response, status_code)
+    elif not signature_verification(req):
+        logging.warning("Invalid request signature")
+        return create_http_response("Invalid request signature", 401)
 
-        req_body = req.get_json()
-        #logging.debug(f"Request body: {req_body}")
+    req_body = req.get_json()
+    #logging.debug(f"Request body: {req_body}")
 
-        if req_body["type"] == 1:
-            response = {"type": 1}
-            status_code = 200
-        elif req_body["type"] == 2:
-            logging.info("Type 2, submitting to queue and deferring")
-            response = {
-                "type": 5,
-                "content": "Pending"
-            }
-            status_code = 200
-            url = f"{AZFUNC}/api/dr_discord_bot_interaction_handler?code={INTERACTION_FUNCTION_KEY}"
-            logging.warning(f"Requesting URL: {url}")
+    if req_body["type"] == 1:
+        response = {"type": 1}
+        status_code = 200
+    elif req_body["type"] == 2:
+        logging.info("Type 2, submitting to queue and deferring")
+        response = {
+            "type": 5,
+            "content": "Pending"
+        }
+        status_code = 200
+        url = f"{AZFUNC}/api/dr_discord_bot_interaction_handler?code={INTERACTION_FUNCTION_KEY}"
+        logging.warning(f"Requesting URL: {url}")
 
-            headers = {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-    except Exception as e:
-        logging.error(f"Unexpected error in base function: {e}")
-        return create_http_response("Internal server error", 500)
+        headers = {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    #except Exception as e:
+        #logging.error(f"Unexpected error in base function: {e}")
+        #return create_http_response("Internal server error", 500)
     logging.info(f"Got here")
     requests.post(url, headers=headers, json=req_body, timeout=1)
     return create_http_response(response, status_code)
