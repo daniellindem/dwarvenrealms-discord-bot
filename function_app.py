@@ -109,12 +109,15 @@ def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
             #except requests.exceptions.RequestException as e:
             #    logging.error(f"Error submitting to queue: {e}")
             #    return create_http_response("Error submitting to queue", 500)
+            return create_http_response(response, status_code)
 
-        return create_http_response(response, status_code)
+        
 
     except Exception as e:
         logging.error(f"Unexpected error in base function: {e}")
-        return create_http_response("Internal server error", 500)
+        return create_http_response(response, status_code)
+        #return create_http_response("Internal server error", 500)
+    
 
 
 # INTERACTION FUNCTION FUNCTIONS
