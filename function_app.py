@@ -229,12 +229,12 @@ def interact(raw_request):
         else:
             message_content = "Unknown command"
 
-        logging.info("Message content: %s", message_content)
+        logging.info(f"Message content: {message_content}")
         return message_content
 
     except Exception as e:
-        logging.error("Error processing request: %s", e)
-        return "Error processing request: %s", e
+        logging.error(f"Error processing request: {e}")
+        return f"Error processing request: {e}", 
 
 # ----------------------------------------------------------------------------
 # ------------------------ INTERACTION FUNCTION ------------------------------
