@@ -139,10 +139,11 @@ def get_credentials():
         logging.error(f"Error fetching credentials: {e}")
         return None
 
-def rupturecalc(rupturelevel, rerollcost, service):
+def rupturecalc(rupturelevel, rerollcost):
     spreadsheet_range = "Rupture Boss Chest Calculated Data!A1:H"
     
     try:
+        service = build("sheets", "v4", credentials=get_credentials())
         # Call the Sheets API
         sheet = service.spreadsheets()
         result = sheet.values().get(spreadsheetId=GOOGLE_API_SPREADSHEET_ID, range=spreadsheet_range).execute()
