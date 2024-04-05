@@ -234,7 +234,7 @@ def interact(raw_request):
 
     except Exception as e:
         logging.error(f"Error processing request: {e}")
-        return f"Error processing request: {e}", 
+        return f"Error processing request: {e}"
 
 # ----------------------------------------------------------------------------
 # ------------------------ INTERACTION FUNCTION ------------------------------
