@@ -265,7 +265,7 @@ def dr_discord_bot_interaction_handler(req: func.HttpRequest) -> func.HttpRespon
 # ----------------------------------------------------------------------------
 # ------------------------ TIMER TRIGGER FUNCTION ----------------------------
 # ----------------------------------------------------------------------------
-@app.timer_trigger(schedule="* */4 * * * *", arg_name="myTimer", run_on_startup=False,
+@app.timer_trigger(schedule="0 */4 * * * *", arg_name="myTimer", run_on_startup=False,
               use_monitor=False) 
 def ping_discordbot_functions(myTimer: func.TimerRequest) -> None:
     if myTimer.past_due:
