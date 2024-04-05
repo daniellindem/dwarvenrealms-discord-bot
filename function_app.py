@@ -66,6 +66,10 @@ def create_http_response(content, status_code, mimetype="application/json"):
     logging.info (f"Creating HTTP response with status code {status_code}")
     return func.HttpResponse(json.dumps(content), status_code=status_code, mimetype=mimetype)
 
+# ----------------------------------------------------------------------------
+# ---------------------------- BASE FUNCTION ---------------------------------
+# ----------------------------------------------------------------------------
+
 app = func.FunctionApp()
 @app.route(route="dr_discord_bot_handler", auth_level=func.AuthLevel.FUNCTION)
 def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
@@ -107,7 +111,8 @@ def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
         #return create_http_response("Internal server error", 500)
     logging.info(f"Got here")
     requests.post(url, headers=headers, json=req_body, timeout=1)
-    return create_http_response(response, status_code)
+    return func.HttpResponse(json.dumps(response), status_code=status_code, mimetype="application/json")
+    #return create_http_response(response, status_code)
     
 
 
@@ -226,7 +231,9 @@ def interact(raw_request):
         logging.error("Error processing request: %s", e)
         return "Error processing request"
 
-# INTERACTION HANDLER FUNCTION
+# ----------------------------------------------------------------------------
+# ------------------------ INTERACTION FUNCTION ------------------------------
+# ----------------------------------------------------------------------------
 @app.route(route="dr_discord_bot_interaction_handler", auth_level=func.AuthLevel.FUNCTION)
 def dr_discord_bot_interaction_handler(req: func.HttpRequest) -> func.HttpResponse:
     try:
@@ -253,10 +260,10 @@ def dr_discord_bot_interaction_handler(req: func.HttpRequest) -> func.HttpRespon
         return create_http_response("Internal server error", status_code=500)
 
 
-# TIMER TRIGGER TO KEEP OTHER FUNCTIONS WARM
-
-
-@app.timer_trigger(schedule="* 5 * * * *", arg_name="myTimer", run_on_startup=False,
+# ----------------------------------------------------------------------------
+# ------------------------ TIMER TRIGGER FUNCTION ----------------------------
+# ----------------------------------------------------------------------------
+@app.timer_trigger(schedule="* */4 * * * *", arg_name="myTimer", run_on_startup=False,
               use_monitor=False) 
 def ping_discordbot_functions(myTimer: func.TimerRequest) -> None:
     if myTimer.past_due:
