@@ -259,7 +259,8 @@ def dr_discord_bot_interaction_handler(req: func.HttpRequest) -> func.HttpRespon
 
     except Exception as e:
         logging.error(f"An unexpected error occurred in interaction function: {e}")
-        return create_http_response("Internal server error", status_code=500)
+        return create_http_response("Error in interaction function: {e}. Status Code:", status_code=200)
+        #return create_http_response("Internal server error", status_code=500)
 
 
 # ----------------------------------------------------------------------------
