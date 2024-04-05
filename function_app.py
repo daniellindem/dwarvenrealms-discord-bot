@@ -100,7 +100,7 @@ def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
         }
         status_code = 200
         url = f"{AZFUNC}/api/dr_discord_bot_interaction_handler?code={INTERACTION_FUNCTION_KEY}"
-        logging.warning(f"Requesting URL: {url}")
+        #logging.warning(f"Requesting URL: {url}") # Potentially sensitive
 
         headers = {
             'Content-Type': 'application/json',
@@ -183,7 +183,7 @@ def rupturecalc(rupturelevel, rerollcost, service):
 def send_discord_followup(request_body, content):
     try:
         logging.info("Starting to send Discord follow-up")
-        logging.warning(f"Request body: {request_body}")
+        #logging.warning(f"Request body: {request_body}") # Potentially sensitive
 
         # Construct the URL for sending the follow-up message
         url = f"https://discord.com/api/v10/webhooks/{request_body['application_id']}/{request_body['token']}/messages/@original"
@@ -211,7 +211,7 @@ def send_discord_followup(request_body, content):
         
 def interact(raw_request):
     try:
-        #logging.info("Processing body: %s", raw_request)
+        logging.info("Processing body: %s", raw_request)
         data = raw_request.get("data", {})
         command_name = data.get("name", "")
 
