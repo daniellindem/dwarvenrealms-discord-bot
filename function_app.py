@@ -110,7 +110,9 @@ def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
         #logging.error(f"Unexpected error in base function: {e}")
         #return create_http_response("Internal server error", 500)
     logging.info(f"Got here")
-    requests.post(url, headers=headers, json=req_body, timeout=1)
+    res = requests.post(url, headers=headers, json=req_body, timeout=1)
+    logging.debug(f"Response from interaction function: {res.status_code}")
+    logging.debug(f"Response content: {res.content}")
     return func.HttpResponse(json.dumps(response), status_code=status_code, mimetype="application/json")
     #return create_http_response(response, status_code)
     
