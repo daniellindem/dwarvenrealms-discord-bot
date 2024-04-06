@@ -1,0 +1,31 @@
+- name: hello
+  description: Say Hello!
+
+- name: echo
+  description: Echo message back to sender.
+  options:
+    - name: message
+      description: The message to echo back.
+      type: 3 # string
+      required: true
+
+- name: spreadsheet
+  description: The url for rupture spreadsheet.
+
+- name: rupturecalc
+  description: Calculate rupture runs per beetle/reroll.
+  options:
+    - name: rupturelevel
+      description: The Rupture Level you want to use for calculation.
+      type: 4 # integer
+      required: true
+      min_value: 36
+      max_value: 500
+    - name: rerollcost
+      description: The Reroll cost you want to assume (Default 1500).
+      type: 4 # integer
+      required: false
+      min_value: 150
+      max_value: 5000
+
+  
