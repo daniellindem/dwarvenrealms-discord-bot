@@ -128,8 +128,8 @@ def rupturecalc(rupturelevel, rerollcost):
         values = result.json().get("values", [])
         
         if not values:
-            logging.warning("No data found.")
-            return None
+            logging.warning("No data found in sheet.")
+            return "No data found in sheet."
         
         for row in values[1:]:
             if int(row[0]) == rupturelevel:
@@ -153,14 +153,14 @@ def rupturecalc(rupturelevel, rerollcost):
                 return content
         else:
             logging.warning(f"Rupture level {rupturelevel} not found in the spreadsheet.")
-            return None
+            return f"Rupture level {rupturelevel} not found in the spreadsheet."
             
     except requests.HTTPError as httperr:
         logging.error(f"HTTP error occurred: {httperr}")
-        return None
+        return f"HTTP error occurred: {httperr}"
     except Exception as e:
         logging.error(f"Error occurred in rupturecalc: {e}")
-        return None
+        return f"Error occurred in rupturecalc: {e}"
         
 def send_discord_followup(request_body, content):
     try:
