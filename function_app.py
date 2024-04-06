@@ -180,6 +180,9 @@ def rupturecalc(rupturelevel, rerollcost):
     except HttpError as err:
         logging.error(f"HTTP error occurred: {err}")
         return None
+    except Exception as e:
+        logging.error(f"Error occurred in rupturecalc: {e}")
+        return None
         
 def send_discord_followup(request_body, content):
     try:
