@@ -14,7 +14,7 @@ logging.basicConfig()
 logging.getLogger().setLevel(logging.DEBUG)
 
 
-DISCORD_PUBLIC_KEY = os.getenv('DISCORD_PUBLIC_KEY')
+DISCORD_BOT_PUBLIC_KEY = os.getenv('DISCORD_BOT_PUBLIC_KEY')
 HANDLER_FUNCTION_KEY = os.getenv('HANDLER_FUNCTION_KEY')
 INTERACTION_FUNCTION_KEY = os.getenv('INTERACTION_FUNCTION_KEY')
 AZFUNC = os.getenv('AZFUNC')
@@ -33,7 +33,7 @@ def signature_verification(req: func.HttpRequest) -> bool:
         body = req.get_body()
         
         if signature and timestamp and body:
-            if verify_key(body, signature, timestamp, DISCORD_PUBLIC_KEY):
+            if verify_key(body, signature, timestamp, DISCORD_BOT_PUBLIC_KEY):
                 logging.info("Discord signature has been verified.")
                 return True
             else:
@@ -225,7 +225,10 @@ def interact(raw_request):
             message_content = "[Rupture Spreadsheet](https://docs.google.com/spreadsheets/d/1rRO1LMt1NgykrdEfoZdEwhp4c9TRHTexYLuk6mgxLa0/edit#gid=0)"
         elif command_name == "rupturecalc":
             rupturelevel = data.get("options", [{}])[0].get("value", "")
-            rerollcost = data.get("options", [{}])[1].get("value", 1500)
+            try:
+                rerollcost = data.get("options", [{}])[1].get("value", 1500)
+            except:
+                rerollcost = 1500
             message_content = rupturecalc(rupturelevel, rerollcost)
         else:
             message_content = "Unknown command"
