@@ -5,10 +5,6 @@ import os
 import math
 import json
 from discord_interactions import verify_key
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
-from googleapiclient.discovery import build
-from google.oauth2 import credentials
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.DEBUG)
@@ -19,9 +15,7 @@ HANDLER_FUNCTION_KEY = os.getenv('HANDLER_FUNCTION_KEY')
 INTERACTION_FUNCTION_KEY = os.getenv('INTERACTION_FUNCTION_KEY')
 AZFUNC = os.getenv('AZFUNC')
 GOOGLE_API_SPREADSHEET_ID = os.getenv("GOOGLE_API_SPREADSHEET_ID")
-GOOGLE_API_CLIENT_ID = os.getenv("GOOGLE_API_CLIENT_ID")
-GOOGLE_API_CLIENT_SECRET = os.getenv("GOOGLE_API_CLIENT_SECRET")
-GOOGLE_API_REFRESH_TOKEN = os.getenv("GOOGLE_API_REFRESH_TOKEN")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
@@ -123,35 +117,15 @@ def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
 
 # INTERACTION FUNCTION FUNCTIONS
 
-def get_credentials():
-    try:
-        # Create GoogleCredentials object
-        cred = credentials.Credentials(
-            token=None,
-            refresh_token=GOOGLE_API_REFRESH_TOKEN,
-            token_uri="https://accounts.google.com/o/oauth2/token",
-            client_id=GOOGLE_API_CLIENT_ID,
-            client_secret=GOOGLE_API_CLIENT_SECRET
-        )
-        logging.info("Credentials for Google Sheet fetched")
-        return cred
-    except Exception as e:
-        logging.error(f"Error fetching credentials: {e}")
-        return None
 
 def rupturecalc(rupturelevel, rerollcost):
     spreadsheet_range = "Rupture Boss Chest Calculated Data!A1:H"
-    service = build("sheets", "v4", credentials=get_credentials())
-    logging.debug(f"Service: {service}")
+    spreadsheet_url = f"https://sheets.googleapis.com/v4/spreadsheets/{GOOGLE_API_SPREADSHEET_ID}/values/{spreadsheet_range}?key={GOOGLE_API_KEY}"
     
     try:
         # Call the Sheets API
-        sheet = service.spreadsheets()
-        logging.debug(f"Sheet: {sheet}")
-        result = sheet.values().get(spreadsheetId=GOOGLE_API_SPREADSHEET_ID, range=spreadsheet_range).execute()
-        logging.debug(f"Result: {result}")
+        result = requests.get(url=spreadsheet_url)
         values = result.get("values", [])
-        logging.debug(f"Values: {values}")
         
         if not values:
             logging.warning("No data found.")
@@ -181,8 +155,8 @@ def rupturecalc(rupturelevel, rerollcost):
             logging.warning(f"Rupture level {rupturelevel} not found in the spreadsheet.")
             return None
             
-    except HttpError as err:
-        logging.error(f"HTTP error occurred: {err}")
+    except requests.HTTPError as httperr:
+        logging.error(f"HTTP error occurred: {httperr}")
         return None
     except Exception as e:
         logging.error(f"Error occurred in rupturecalc: {e}")
