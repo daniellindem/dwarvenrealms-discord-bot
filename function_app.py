@@ -165,7 +165,6 @@ def rupturecalc(rupturelevel, rerollcost):
 def send_discord_followup(request_body, content):
     try:
         logging.info("Starting to send Discord follow-up")
-        #logging.warning(f"Request body: {request_body}") # Potentially sensitive
 
         # Construct the URL for sending the follow-up message
         url = f"https://discord.com/api/v10/webhooks/{request_body['application_id']}/{request_body['token']}/messages/@original"
@@ -177,10 +176,7 @@ def send_discord_followup(request_body, content):
         # Send the PATCH request to Discord API
         response = requests.patch(url, headers=headers, data=body)
         logging.info(f"Response status code: {response.status_code}")
-        logging.info(f"Response content: {response.text}")
-        #logging.info(f"URL: {url}")
         logging.info(f"Content: {content}")
-        #logging.info(f"Body type: {type(body)}")
         logging.info(f"Body: {body}")
 
         # Check for HTTP errors
