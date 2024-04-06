@@ -125,7 +125,7 @@ def rupturecalc(rupturelevel, rerollcost):
     try:
         # Call the Sheets API
         result = requests.get(url=spreadsheet_url)
-        values = result.get("values", [])
+        values = result.json().get("values", [])
         
         if not values:
             logging.warning("No data found.")
