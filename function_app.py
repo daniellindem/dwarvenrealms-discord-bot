@@ -110,7 +110,7 @@ def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
             #res.raise_for_status()
             logging.info(f"Response status code: {res.status_code}")
         except requests.exceptions.RequestException as e:
-            logging.error(f"Request error in base function: {e}")
+            logging.warning(f"Request either timed out like expected or something else happened: {e}")
         except Exception as e:
             logging.error(f"Unexpected error in base function: {e}")
             #return create_http_response("Internal server error", 500)
@@ -196,11 +196,10 @@ def interact(raw_request):
         data = raw_request.get("data", {})
         command_name = data.get("name", "")
 
-        if command_name == "hello":
-            message_content = "Hello there!"
-        elif command_name == "echo":
-            original_message = data.get("options", [{}])[0].get("value", "")
-            message_content = f"Echoing: {original_message}"
+        if command_name == "github":
+            message_content = "[Github Repo](https://github.com/daniellindem/dwarvenrealms-discord-bot)"
+        elif command_name == "help":
+            message_content = f"Echoing: "
         elif command_name == "spreadsheet":
             message_content = "[Rupture Spreadsheet](https://docs.google.com/spreadsheets/d/1rRO1LMt1NgykrdEfoZdEwhp4c9TRHTexYLuk6mgxLa0/edit#gid=0)"
         elif command_name == "rupturecalc":
