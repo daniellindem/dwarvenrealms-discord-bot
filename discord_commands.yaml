@@ -33,4 +33,16 @@
 
 - name: help
   description: Get help on how to use the bot.
+  options:
+    - name: command
+      description: The command you want help with.
+      type: 3 # string
+      required: false
+      choices:
+        - name: spreadsheet
+          value: spreadsheet
+        - name: rupturecalc
+          value: rupturecalc
+        - name: github
+          value: github
   
