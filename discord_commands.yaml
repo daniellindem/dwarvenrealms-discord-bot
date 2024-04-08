@@ -28,8 +28,8 @@
       min_value: 150
       max_value: 5000
 
-- name : github
-  description: The url for the github repository.
+#- name : github
+#  description: The url for the github repository.
 
 - name: help
   description: Get help on how to use the bot.
@@ -43,6 +43,6 @@
           value: spreadsheet
         - name: rupturecalc
           value: rupturecalc
-        - name: github
-          value: github
+        #- name: github
+        #  value: github
   

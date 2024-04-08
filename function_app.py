@@ -204,7 +204,7 @@ def interact(raw_request):
                 if command_name == "rupturecalc":
                     message_content = "Use `/rupturecalc` followed by the Rupture level and reroll cost to calculate the number of runs needed for the given level and cost."
             except:
-                message_content = f"Available commands: `github`, `help`, `spreadsheet`, `rupturecalc`.\n\n"
+                message_content = f"Available commands: `help`, `spreadsheet`, `rupturecalc`.\n\n"
             
         elif command_name == "spreadsheet":
             message_content = "[Rupture Spreadsheet](https://docs.google.com/spreadsheets/d/1rRO1LMt1NgykrdEfoZdEwhp4c9TRHTexYLuk6mgxLa0/edit#gid=0)"
