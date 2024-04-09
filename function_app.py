@@ -66,7 +66,10 @@ def create_http_response(content, status_code, mimetype="application/json"):
 
 app = func.FunctionApp()
 @app.route(route="dr_discord_bot_handler", auth_level=func.AuthLevel.FUNCTION)
-def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
+@app.queue_output(arg_name="msg", 
+                  queue_name="interactionqueue", 
+                  connection="AzureWebJobsStorage")
+def dr_discord_bot_handler(req: func.HttpRequest, interaction_body: func.Out [func.QueueMessage]) -> func.HttpResponse:
     #try:
     logging.info('Python HTTP trigger function processed a request.')
     
@@ -106,9 +109,10 @@ def dr_discord_bot_handler(req: func.HttpRequest) -> func.HttpResponse:
         
         try:
             print(url)
-            res = requests.post(url, headers=headers, json=req_body, timeout=1)
+            #res = requests.post(url, headers=headers, json=req_body, timeout=1)
+            interaction_body.set(json.dumps(req_body))
             #res.raise_for_status()
-            logging.info(f"Response status code: {res.status_code}")
+            #logging.info(f"Response status code: {res.status_code}")
         except requests.exceptions.RequestException as e:
             logging.warning(f"Request either timed out like expected or something else happened: {e}")
         except Exception as e:
@@ -365,17 +369,21 @@ def interact(raw_request):
 # ----------------------------------------------------------------------------
 # ------------------------ INTERACTION FUNCTION ------------------------------
 # ----------------------------------------------------------------------------
-@app.route(route="dr_discord_bot_interaction_handler", auth_level=func.AuthLevel.FUNCTION)
-def dr_discord_bot_interaction_handler(req: func.HttpRequest) -> func.HttpResponse:
+#@app.route(route="dr_discord_bot_interaction_handler", auth_level=func.AuthLevel.FUNCTION)
+@app.queue_trigger(arg_name="azqueue", queue_name="interactionqueue",
+                               connection="AzureWebJobsStorage") 
+def dr_discord_bot_interaction_handler(azqueue: func.QueueMessage):
     try:
         logging.info('Python HTTP trigger function processed a request.')
 
-        warmup = req.params.get('warmup')
-        if warmup:
-            logging.info('Received warmup request.')
-            return create_http_response('Warmed up', status_code=200)
+        #warmup = req.params.get('warmup')
+        #if warmup:
+        #    logging.info('Received warmup request.')
+        #    return create_http_response('Warmed up', status_code=200)
 
-        raw_req = req.get_json()
+        #raw_req = req.get_json()
+        
+        raw_req = json.loads(azqueue.get_body().decode('utf-8'))
         #logging.info(f"Received request body: {raw_req}")
 
         content = interact(raw_req)
@@ -384,11 +392,11 @@ def dr_discord_bot_interaction_handler(req: func.HttpRequest) -> func.HttpRespon
         send_discord_followup(raw_req, content)
         logging.info('Follow-up sent successfully.')
 
-        return create_http_response("OK", status_code=200)
+        #return create_http_response("OK", status_code=200)
 
     except Exception as e:
         logging.error(f"An unexpected error occurred in interaction function: {e}")
-        return create_http_response("Error in interaction function: {e}. Status Code:", status_code=200)
+        #return create_http_response("Error in interaction function: {e}. Status Code:", status_code=200)
         #return create_http_response("Internal server error", status_code=500)
 
 
