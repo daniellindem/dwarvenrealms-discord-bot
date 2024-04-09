@@ -218,14 +218,14 @@ def format_character_info_base(highest_characters):
             else:
                 alive_status = "Dead"
             message += f"""**Name:** {character["character_info"]["name"]}
-**Rapture Level:** {character["character_info"]["raptureLevel"]}
+**Rupture Level:** {character["character_info"]["raptureLevel"]}
 **Ranking:** {character["ranking"]}
 **Leaderboard:** {character["leaderboard_type"]}
 **Status:** {alive_status}
 \n"""
         else:
             message += f"""**Name:** {character["character_info"]["name"]}
-**Rapture Level:** {character["character_info"]["raptureLevel"]}
+**Rupture Level:** {character["character_info"]["raptureLevel"]}
 **Ranking:** {character["ranking"]}
 **Leaderboard:** {character["leaderboard_type"]}
 \n"""
