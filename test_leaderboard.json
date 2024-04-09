@@ -1,36 +1,110 @@
-{
-  "leaderboard_type": "Softcore",
-  "character_info": {
-    "isOnline": false,
-    "id": "65f2b96f1df5177425b30247",
-    "name": "Siris (Hephosyne)",
-    "level": "562",
-    "deaths": "123",
-    "raptureLevel": "115",
-    "build": {
-      "amuletMod": "a mob killed in a rupture will have increased chance to grant essence",
-      "bracerMod": "gain an extra essence each time you get essence",
-      "gobletMod": "Eye of the storm lasts longer.",
-      "helmetMod": "All your offhands have a 100% proc chance",
-      "hornMod": "Eye of the storm grows larger with each tick",
-      "relicMod": "",
-      "trinketMod": "Eye of the storm lasts longer."
+[
+  {
+    "character_info": {
+      "build": {
+        "amuletMod": "For each 2 points in wisdom you get 1% health",
+        "bracerMod": "Gain 1% crit damage for each 10 armor points",
+        "gobletMod": "Eye of the storm lasts longer.",
+        "helmetMod": "All your offhands have a 100% proc chance",
+        "hornMod": "Eye of the storm lasts longer.",
+        "relicMod": "",
+        "trinketMod": "Eye of the storm grows larger with each tick"
+      },
+      "deaths": "1",
+      "id": "65f47af41df5177425dd4140",
+      "isHardcore": true,
+      "isOnline": false,
+      "level": "677",
+      "name": "Konmura (Quest)",
+      "raptureLevel": "156",
+      "stance": "Bow",
+      "tokens": [
+        "Underground Enclave",
+        "Min Loduhr",
+        "The Ancient Catacombs",
+        "Elyisia",
+        "Grave Digger",
+        "Harmon Olympus",
+        "The Elven Capital",
+        "Bridge of Demigods",
+        "The Hour Glass",
+        "The Ancient Catacombs II",
+        "Archeon"
+      ],
+      "zone": "end_game_kabarian_battlefield_ogre_boss_fight_1"
     },
-    "zone": "Home_Fort_Snow",
-    "stance": "Bow",
-    "isHardcore": false,
-    "tokens": [
-      "Min Loduhr",
-      "Elyisia",
-      "The Ancient Catacombs",
-      "Underground Enclave",
-      "Grave Digger",
-      "The Elven Capital",
-      "The Hour Glass",
-      "Harmon Olympus",
-      "The Ancient Catacombs II",
-      "Bridge of Demigods"
-    ]
+    "leaderboard_type": "Hardcore",
+    "ranking": 2
   },
-  "ranking": 96
-}
+  {
+    "character_info": {
+      "build": {
+        "amuletMod": "a mob killed in a rupture will have increased chance to grant essence",
+        "bracerMod": "gain an extra essence each time you get essence",
+        "gobletMod": "Each enemy hit with burning shield will grant an increased buff to damage and armor",
+        "helmetMod": "Gain additional 1% damage bonus for each extra inventory slot",
+        "hornMod": "When activating spinning blade, chance that it will spawn another blade around you.",
+        "relicMod": "You gain 50% experience bonus and value of gems when imbuing into a fossil - if your character is Hardcore and has never been in a fellowship.",
+        "trinketMod": "When activating spinning blade, chance that it will spawn another blade around you."
+      },
+      "deaths": "0",
+      "id": "660ee3d377544f59f251d08c",
+      "isHardcore": true,
+      "isOnline": true,
+      "level": "579",
+      "name": "Konmura (Memento)",
+      "raptureLevel": "116",
+      "stance": "Magic",
+      "tokens": [
+        "The Ancient Catacombs",
+        "Tomb of Fortune",
+        "Min Loduhr",
+        "Elyisia",
+        "Harmon Olympus",
+        "The Elven Capital",
+        "Grave Digger",
+        "Bridge of Demigods",
+        "The Hour Glass"
+      ],
+      "zone": "Myrh_Passing_Forest_End_Game_Zone"
+    },
+    "leaderboard_type": "Hardcore",
+    "ranking": 16
+  },
+  {
+    "leaderboard_type": "Softcore",
+    "character_info": {
+      "isOnline": false,
+      "id": "65f2b96f1df5177425b30247",
+      "name": "Konmura (Hephosyne)",
+      "level": "562",
+      "deaths": "123",
+      "raptureLevel": "115",
+      "build": {
+        "amuletMod": "a mob killed in a rupture will have increased chance to grant essence",
+        "bracerMod": "gain an extra essence each time you get essence",
+        "gobletMod": "Eye of the storm lasts longer.",
+        "helmetMod": "All your offhands have a 100% proc chance",
+        "hornMod": "Eye of the storm grows larger with each tick",
+        "relicMod": "",
+        "trinketMod": "Eye of the storm lasts longer."
+      },
+      "zone": "Home_Fort_Snow",
+      "stance": "Bow",
+      "isHardcore": false,
+      "tokens": [
+        "Min Loduhr",
+        "Elyisia",
+        "The Ancient Catacombs",
+        "Underground Enclave",
+        "Grave Digger",
+        "The Elven Capital",
+        "The Hour Glass",
+        "Harmon Olympus",
+        "The Ancient Catacombs II",
+        "Bridge of Demigods"
+      ]
+    },
+    "ranking": 96
+  }
+]
