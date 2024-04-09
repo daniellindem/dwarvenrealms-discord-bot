@@ -196,27 +196,37 @@ def interact(raw_request):
         data = raw_request.get("data", {})
         command_name = data.get("name", "")
 
-        if command_name == "github":
-            message_content = "[Github Repo](https://github.com/daniellindem/dwarvenrealms-discord-bot)"
-        elif command_name == "help":
-            try:
-                command_name = data.get("options", [{}])[0].get("value", "")
-                if command_name == "rupturecalc":
-                    message_content = "Use `/rupturecalc` followed by the Rupture level and reroll cost to calculate the number of runs needed for the given level and cost."
-            except:
-                message_content = f"Available commands: `help`, `spreadsheet`, `rupturecalc`.\n\n"
-            
-        elif command_name == "spreadsheet":
-            message_content = "[Rupture Spreadsheet](https://docs.google.com/spreadsheets/d/1rRO1LMt1NgykrdEfoZdEwhp4c9TRHTexYLuk6mgxLa0/edit#gid=0)"
-        elif command_name == "rupturecalc":
-            rupturelevel = data.get("options", [{}])[0].get("value", "")
-            try:
-                rerollcost = data.get("options", [{}])[1].get("value", 1500)
-            except:
-                rerollcost = 1500
-            message_content = rupturecalc(rupturelevel, rerollcost)
-        else:
-            message_content = "Unknown command"
+        match command_name:
+            case "github":
+                message_content = "[Github Repo](https://github.com/daniellindem/dwarvenrealms-discord-bot)"
+
+            case "leaderboard":
+                message_content = "[Leaderboard](https://dwarvenleaderboard.com/)"
+
+            case "help":
+                try:
+                    sub_command = data.get("options", [{}])[0].get("value", "")
+                    if sub_command == "rupturecalc":
+                        message_content = "Use `/rupturecalc` followed by the Rupture level and reroll cost to calculate the number of runs needed for the given level and cost."
+                    else:
+                        message_content = f"Available commands: `help`, `spreadsheet`, `rupturecalc`.\n\n"
+                except:
+                    message_content = f"Available commands: `help`, `spreadsheet`, `rupturecalc`.\n\n"
+
+            case "spreadsheet":
+                message_content = "[Rupture Spreadsheet](https://docs.google.com/spreadsheets/d/1rRO1LMt1NgykrdEfoZdEwhp4c9TRHTexYLuk6mgxLa0/edit#gid=0)"
+                
+            case "rupturecalc":
+                rupturelevel = data.get("options", [{}])[0].get("value", "")
+                try:
+                    rerollcost = data.get("options", [{}])[1].get("value", 1500)
+                except:
+                    rerollcost = 1500
+                message_content = rupturecalc(rupturelevel, rerollcost)
+                
+            case _:
+                message_content = "Unknown command"
+
 
         logging.info(f"Message content: {message_content}")
         return message_content
