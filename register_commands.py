@@ -23,8 +23,10 @@ def get_defined_commands():
 
 def cleanup_commands(defined_commands):
     active_commands = requests.get(URL, headers=headers)
+    defined_command_names = [obj['name'] for obj in defined_commands]
+    print(active_commands.json(), "___________       ___________", defined_commands)
     for command in active_commands.json():
-        if command not in defined_commands:
+        if command['name'] not in defined_command_names:
             command_id = command["id"]
             response = requests.delete(f"{URL}/{command_id}", headers=headers)
             print(f"Command {command_id} deleted: {response.status_code}")

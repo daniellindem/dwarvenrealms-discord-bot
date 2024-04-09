@@ -6,3 +6,5 @@ azure-functions
 discord-interactions
 requests
 google-api-python-client
+pyyaml
+python-dotenv
