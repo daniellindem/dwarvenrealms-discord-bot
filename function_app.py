@@ -5,6 +5,10 @@ import os
 import math
 import json
 from discord_interactions import verify_key
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 logging.basicConfig()
 logging.getLogger().setLevel(logging.DEBUG)
@@ -66,10 +70,10 @@ def create_http_response(content, status_code, mimetype="application/json"):
 
 app = func.FunctionApp()
 @app.route(route="dr_discord_bot_handler", auth_level=func.AuthLevel.FUNCTION)
-@app.queue_output(arg_name="msg", 
+@app.queue_output(arg_name="interactionbody", 
                   queue_name="interactionqueue", 
                   connection="AzureWebJobsStorage")
-def dr_discord_bot_handler(req: func.HttpRequest, interaction_body: func.Out [func.QueueMessage]) -> func.HttpResponse:
+def dr_discord_bot_handler(req: func.HttpRequest, interactionbody: func.Out [func.QueueMessage]) -> func.HttpResponse:
     #try:
     logging.info('Python HTTP trigger function processed a request.')
     
@@ -110,7 +114,7 @@ def dr_discord_bot_handler(req: func.HttpRequest, interaction_body: func.Out [fu
         try:
             print(url)
             #res = requests.post(url, headers=headers, json=req_body, timeout=1)
-            interaction_body.set(json.dumps(req_body))
+            interactionbody.set(json.dumps(req_body))
             #res.raise_for_status()
             #logging.info(f"Response status code: {res.status_code}")
         except requests.exceptions.RequestException as e:
@@ -413,13 +417,13 @@ def ping_discordbot_functions(myTimer: func.TimerRequest) -> None:
 
     body = {"type": "warmup"}
     
-    func1_url = f"{AZFUNC}/api/dr_discord_bot_handler?code={HANDLER_FUNCTION_KEY}"
+    #func1_url = f"{AZFUNC}/api/dr_discord_bot_handler?code={HANDLER_FUNCTION_KEY}"
     func2_url = f"{AZFUNC}/api/dr_discord_bot_interaction_handler?code={INTERACTION_FUNCTION_KEY}&warmup='true'"
     
     headers = {"Content-Type": "application/json"}
 
-    response1 = requests.post(func1_url, json=body, headers=headers)
-    response2 = requests.post(func2_url, headers=headers)
+    #response1 = requests.post(func1_url, json=body, headers=headers)
+    #response2 = requests.post(func2_url, headers=headers)
 
-    logging.info(f"Response from func1: {response1.status_code}")
-    logging.info(f"Response from func2: {response2.status_code}")
+    #logging.info(f"Response from func1: {response1.status_code}")
+    #logging.info(f"Response from func2: {response2.status_code}")
