@@ -1,0 +1,36 @@
+{
+  "leaderboard_type": "Softcore",
+  "character_info": {
+    "isOnline": false,
+    "id": "65f2b96f1df5177425b30247",
+    "name": "Siris (Hephosyne)",
+    "level": "562",
+    "deaths": "123",
+    "raptureLevel": "115",
+    "build": {
+      "amuletMod": "a mob killed in a rupture will have increased chance to grant essence",
+      "bracerMod": "gain an extra essence each time you get essence",
+      "gobletMod": "Eye of the storm lasts longer.",
+      "helmetMod": "All your offhands have a 100% proc chance",
+      "hornMod": "Eye of the storm grows larger with each tick",
+      "relicMod": "",
+      "trinketMod": "Eye of the storm lasts longer."
+    },
+    "zone": "Home_Fort_Snow",
+    "stance": "Bow",
+    "isHardcore": false,
+    "tokens": [
+      "Min Loduhr",
+      "Elyisia",
+      "The Ancient Catacombs",
+      "Underground Enclave",
+      "Grave Digger",
+      "The Elven Capital",
+      "The Hour Glass",
+      "Harmon Olympus",
+      "The Ancient Catacombs II",
+      "Bridge of Demigods"
+    ]
+  },
+  "ranking": 96
+}
