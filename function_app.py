@@ -222,14 +222,12 @@ def format_character_info_base(highest_characters):
 **Ranking:** {character["ranking"]}
 **Leaderboard:** {character["leaderboard_type"]}
 **Status:** {alive_status}
-**ID:** {character["character_info"]["id"]}
 \n"""
         else:
             message += f"""**Name:** {character["character_info"]["name"]}
 **Rapture Level:** {character["character_info"]["raptureLevel"]}
 **Ranking:** {character["ranking"]}
 **Leaderboard:** {character["leaderboard_type"]}
-**ID:** {character["character_info"]["id"]}
 \n"""
     return message
 
