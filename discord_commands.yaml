@@ -46,3 +46,10 @@
         #- name: github
         #  value: github
   
+- name: leaderboard
+  description: The Dwarvenrealms leaderboard site
+  #options:
+  #  - name: user
+  #    description: The user you want to check leaderboard status for.
+  #    type: 3 # string
+  #    required: false
