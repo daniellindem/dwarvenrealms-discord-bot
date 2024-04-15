@@ -403,7 +403,8 @@ def interact(raw_request):
                 
                 ocr_response = requests.post(ocr_url, headers=headers, data=payload)
                 
-                logging.info(f"OCR response: {ocr_response}")
+                logging.info(f"OCR response: {ocr_response.text}")
+                message_content = ocr_response.text
                 
                 
             case _:
