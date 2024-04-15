@@ -387,7 +387,7 @@ def interact(raw_request):
                 attachment_id = data["options"][0]["value"]
                 attachment_url = data["resolved"]["attachments"][attachment_id]["url"]
 
-                print("Attachment URL:", attachment_url)
+                print("Attachment URL: ", attachment_url)
                 
                 
 
