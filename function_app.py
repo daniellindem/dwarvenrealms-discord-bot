@@ -238,6 +238,13 @@ def format_character_info_base(highest_characters):
 \n"""
     return message
 
+def format_item_details(item):
+    details = ""
+    for key, value in item.items():
+        details += f"**{key}:** {value}\n"
+    return details
+
+
 
 def get_offhand_type(trinketmod, gobletmod, hornmod):
     offhands = ["Arcane Apocalypse","Chain Lightning","Spinning Blade","Eye of the Storm","Lightning Plasma","Delusions of Zelkor","Vortex","Dragon Flames","Ferocity of Wolves","Fire Orb","Arcane Orb","Carnage of Fire","Cracked Arcane Seed","Starblades","Fire Totem","Lightning Totem","Toxicity","Burning Shield","Rain of Fire","Electric Dragons","Arcane Totem","Blood Dragons","Fire Beam","Death Blades","Spark"]
@@ -298,7 +305,75 @@ def leaderboard_lookup(username: str, info_details: str = None) -> str:
         message = format_character_info_base(highest_characters)
         #print(message)
         return message
-        
+
+
+def get_item_data(item_data):
+    # Parse the JSON object
+    parsed_data = json.loads(item_data)
+
+    # Extracting ParsedText
+    parsed_text = parsed_data["ParsedResults"][0]["ParsedText"]
+
+    # Splitting text into lines
+    lines = parsed_text.split('_BREAK_')
+
+    # Initialize dictionary to store extracted data
+    extracted_data = {}
+    data_started = False
+    data_ended = False
+    stat_count = 0
+    stat_match_count = 0
+    item_level = None
+    equipment_type = None
+    item_name = ''
+    item_mod = ''
+
+    # Iterate through each line and extract required information
+    for line in lines:
+        line = line.title()
+        if stat_count == stat_match_count and stat_count != 0:
+                data_ended = True
+        if "Item Level" in line:
+            item_level = line.split(' ')[-1]
+        elif not item_level:
+            item_name += f"{line} "
+        elif "Equipment" in line:
+            equipment_type = line.split(':')[-1].strip()
+            data_started = True
+            continue
+        elif data_started and not '+' in line and not data_ended:
+            extracted_data[line] = ''
+            stat_count += 1
+        elif data_started and '+' in line and not data_ended:
+            stat_match_count += 1
+            extracted_data[list(extracted_data.keys())[stat_match_count-1]] = line
+        else:
+            item_mod += f"{line} "
+
+    # Add item level and equipment type to extracted data
+    extracted_data["Item Level"] = item_level
+    extracted_data["Equipment Type"] = equipment_type
+    extracted_data["Item Name"] = item_name.strip()
+    extracted_data["Item Mod"] = item_mod.strip()
+    
+    stat_counter = 0
+
+    ordered_data = {
+        "Item Name": extracted_data["Item Name"],
+        "Item Level": extracted_data["Item Level"],
+        "Equipment Type": extracted_data["Equipment Type"]
+    }
+
+    for key, value in extracted_data.items():
+        if stat_counter == stat_count:
+            break
+        ordered_data[key] = value
+        stat_counter += 1
+
+    ordered_data["Item Mod"] = extracted_data["Item Mod"]
+
+    return ordered_data
+
 def send_discord_followup(request_body, content):
     """
     Sends a follow-up message to a Discord channel.
@@ -404,8 +479,13 @@ def interact(raw_request):
                 
                 ocr_response = requests.post(ocr_url, headers=headers, data=payload)
                 
-                logging.info(f"OCR response: {ocr_response.text}")
-                message_content = ocr_response.text
+                body = ocr_response.text.replace('\\r\\n', '_BREAK_')
+
+                item_data = get_item_data(body)
+                
+                logging.debug(item_data)
+                
+                message_content = format_item_details(item_data)
                 
                 
             case _:
