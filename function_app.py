@@ -385,8 +385,9 @@ def interact(raw_request):
                 # Assuming your JSON object is stored in a variable named `json_object`
 
                 # Accessing the URL of the attachment
-                attachment_id = data["options"][0]["value"]
-                attachment_url = data["resolved"]["attachments"][attachment_id]["url"]
+                attachment_id = data.get("options", [{}])[0].get("value")
+                attachment_url = data.get("resolved", {}).get("attachments", {}).get(attachment_id, {}).get("url")
+
                 
                 logging.debug("Attachment URL: ", attachment_url)
                 
