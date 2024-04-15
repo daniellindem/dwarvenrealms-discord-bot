@@ -53,3 +53,13 @@
       description: The user you want to check leaderboard status for (Caps insensitive).
       type: 3 # string
       required: false
+
+
+
+- name: imagetest
+  description: TEST ONLY, NOT FUNCTIONAL.
+  options:
+    - name: image
+      description: The image you want to upload.
+      type: 11 # attachment
+      required: true

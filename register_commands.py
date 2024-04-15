@@ -31,8 +31,8 @@ def cleanup_commands(defined_commands):
             print(f"Command {command_id} deleted: {response.status_code}")
 
 
-def add_commands(defined_commands):
-    
+def add_commands(defined_commands, commands_to_add):
+    defined_commands = [command for command in defined_commands if command["name"] in commands_to_add]
     # Send the POST request for each command
     for command in defined_commands:
         try:
@@ -46,9 +46,10 @@ def add_commands(defined_commands):
 
 
 def main():
+    commands_to_add = ['imagetest']
     defined_commands = get_defined_commands()
     cleanup_commands(defined_commands)
-    add_commands(defined_commands)
+    add_commands(defined_commands, commands_to_add)
     
 if __name__ == "__main__":
     main()

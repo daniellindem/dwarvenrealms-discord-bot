@@ -376,7 +376,12 @@ def interact(raw_request):
                 except:
                     rerollcost = 1500
                 message_content = rupturecalc(rupturelevel, rerollcost)
-                
+            
+            case "imagetest":
+                logging.debug("Image test command")
+                logging.debug(data)
+                logging.debug(data.get("options", [{}])[0])
+                            
             case _:
                 message_content = "Unknown command"
 
