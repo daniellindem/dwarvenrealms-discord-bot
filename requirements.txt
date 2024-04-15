@@ -8,3 +8,5 @@ requests
 google-api-python-client
 pyyaml
 python-dotenv
+torch 
+torchvision

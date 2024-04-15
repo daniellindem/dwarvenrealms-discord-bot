@@ -4,6 +4,7 @@ import logging
 import os
 import math
 import json
+import easyocr
 from discord_interactions import verify_key
 
 logging.basicConfig()
@@ -381,6 +382,25 @@ def interact(raw_request):
                 logging.debug("Image test command")
                 logging.debug(data)
                 logging.debug(data.get("options", [{}])[0])
+                # Assuming your JSON object is stored in a variable named `json_object`
+
+                # Accessing the URL of the attachment
+                attachment_id = data["options"][0]["value"]
+                attachment_url = data["resolved"]["attachments"][attachment_id]["url"]
+                
+                imgdata = requests.get(attachment_url)
+                
+                reader = easyocr.Reader(['en'])
+                result = reader.readtext(imgdata.content, detail = 0)
+                logging.debug(f"Result: {result}")
+                
+                message_content = "Here's the result from the image:\n\n"
+                
+                for item in result:
+                    message_content += f"- {item}\n"
+                    
+                logging.debug(f"Message content: {message_content}")
+
                             
             case _:
                 message_content = "Unknown command"
