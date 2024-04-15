@@ -387,9 +387,9 @@ def interact(raw_request):
                 # Accessing the URL of the attachment
                 attachment_id = data.get("options", [{}])[0].get("value")
                 attachment_url = data.get("resolved", {}).get("attachments", {}).get(attachment_id, {}).get("url")
-
+                logging.debug(type(attachment_url))
                 
-                logging.debug(f"Attachment URL: ", attachment_url)
+                logging.debug(f"Attachment URL: ", str(attachment_url))
                 
                 ocr_url = "https://api.ocr.space/parse/image"
                 
