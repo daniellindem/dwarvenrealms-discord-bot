@@ -396,8 +396,16 @@ def interact(raw_request):
                 
                 message_content = "Here's the result from the image:\n\n"
                 
-                for item in result:
-                    message_content += f"- {item}\n"
+                for i, item in enumerate(result):
+                    # Check if the item contains "+"
+                    if "+" in item:
+                        # If it's not the first item and the previous item doesn't end with "+", add a newline
+                        if i != 0 and not message_content.endswith("+"):
+                            message_content += "\n"
+                        # Concatenate the current item with the previous item
+                        message_content += f"{item} "
+                    else:
+                        message_content += f"- {item}\n"
                     
                 logging.debug(f"Message content: {message_content}")
 
