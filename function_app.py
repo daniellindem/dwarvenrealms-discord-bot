@@ -4,7 +4,6 @@ import logging
 import os
 import math
 import json
-import easyocr
 from discord_interactions import verify_key
 
 logging.basicConfig()
@@ -387,27 +386,10 @@ def interact(raw_request):
                 # Accessing the URL of the attachment
                 attachment_id = data["options"][0]["value"]
                 attachment_url = data["resolved"]["attachments"][attachment_id]["url"]
+
+                print("Attachment URL:", attachment_url)
                 
-                imgdata = requests.get(attachment_url)
                 
-                reader = easyocr.Reader(['en'])
-                result = reader.readtext(imgdata.content, detail = 0)
-                logging.debug(f"Result: {result}")
-                
-                message_content = "Here's the result from the image:\n\n"
-                
-                for i, item in enumerate(result):
-                    # Check if the item contains "+"
-                    if "+" in item:
-                        # If it's not the first item and the previous item doesn't end with "+", add a newline
-                        if i != 0 and not message_content.endswith("+"):
-                            message_content += "\n"
-                        # Concatenate the current item with the previous item
-                        message_content += f"{item} "
-                    else:
-                        message_content += f"- {item}\n"
-                    
-                logging.debug(f"Message content: {message_content}")
 
                             
             case _:
