@@ -329,23 +329,31 @@ def get_item_data(item_data):
     # Iterate through each line and extract required information
     for line in lines:
         line = line.title()
+        logging.critical(line)
         if stat_count == stat_match_count and stat_count != 0:
-                data_ended = True
+            logging.debug(f"Data ended {line}")
+            data_ended = True
         if "Item Level" in line:
+            logging.debug(f"Item level found {line}")
             item_level = line.split(' ')[-1]
             if not "Equipment:" in parsed_text:
+                logging.debug("Equipment not found")
                 equipment_type = "Unknown"
                 data_started = True
         elif not item_level:
+            logging.debug(f"Item name {line}")
             item_name += f"{line} "
         elif "Equipment" in line:
+            logging.debug(f"Equipment found {line}")
             equipment_type = line.split(':')[-1].strip()
             data_started = True
             continue
         elif data_started and not '+' in line and not data_ended:
+            logging.debug(f"Stat line {line}")
             extracted_data[line] = ''
             stat_count += 1
         elif data_started and '+' in line and not data_ended:
+            logging.debug(f"Stat match found {line}")
             stat_match_count += 1
             extracted_data[list(extracted_data.keys())[stat_match_count-1]] = line
         else:
