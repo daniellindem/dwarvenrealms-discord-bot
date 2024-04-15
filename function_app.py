@@ -496,7 +496,7 @@ def interact(raw_request):
                 
                 formatted_item_data = format_item_details(item_data)
                 
-                message_content = f"{formatted_item_data}\n{attachment_url})"
+                message_content = f"{formatted_item_data}[Uploaded Image (Verification)]({attachment_url})"
                 
                 
             case _:
