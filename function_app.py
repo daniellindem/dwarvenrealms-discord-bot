@@ -359,11 +359,11 @@ def get_item_data(item_data):
     
     stat_counter = 0
 
-    ordered_data = {
-        "Item Name": extracted_data["Item Name"],
-        "Item Level": extracted_data["Item Level"],
-        "Equipment Type": extracted_data["Equipment Type"]
-    }
+    ordered_data = {}
+    ordered_data["Item Name"] = extracted_data["Item Name"]
+    ordered_data["Item Level"] = extracted_data["Item Level"]
+    if extracted_data["Equipment Type"] != "Unknown":
+        ordered_data["Equipment Type"] = extracted_data["Equipment Type"]
 
     for key, value in extracted_data.items():
         if stat_counter == stat_count:
@@ -496,7 +496,7 @@ def interact(raw_request):
                 
                 formatted_item_data = format_item_details(item_data)
                 
-                message_content = f"{formatted_item_data}\n\n[Image URL]({attachment_url})"
+                message_content = f"{formatted_item_data}\n{attachment_url})"
                 
                 
             case _:
