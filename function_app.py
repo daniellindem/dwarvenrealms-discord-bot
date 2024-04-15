@@ -16,6 +16,7 @@ INTERACTION_FUNCTION_KEY = os.getenv('INTERACTION_FUNCTION_KEY')
 AZFUNC = os.getenv('AZFUNC')
 GOOGLE_API_SPREADSHEET_ID = os.getenv("GOOGLE_API_SPREADSHEET_ID")
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+OCR_API_KEY = os.getenv("OCR_API_KEY")
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
 
@@ -386,8 +387,27 @@ def interact(raw_request):
                 # Accessing the URL of the attachment
                 attachment_id = data["options"][0]["value"]
                 attachment_url = data["resolved"]["attachments"][attachment_id]["url"]
+                
+                logging.debug("Attachment URL: ", attachment_url)
+                
+                ocr_url = "https://api.ocr.space/parse/image"
+                
+                payload={'language': 'eng',
+                'isOverlayRequired': 'false',
+                'url': attachment_url,
+                'iscreatesearchablepdf': 'false',
+                'issearchablepdfhidetextlayer': 'false'}
+                files=[                ]
+                headers = {
+                'apikey': OCR_API_KEY
+                }
+                
+                ocr_response = requests.request("POST", ocr_url, headers=headers, data=payload, files=files)
+                
+                logging.info(f"OCR response: {ocr_response}")
+                
+                
 
-                print("Attachment URL: ", attachment_url)
                 
                 
 
