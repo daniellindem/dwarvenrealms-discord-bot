@@ -308,6 +308,8 @@ def leaderboard_lookup(username: str, info_details: str = None) -> str:
 def get_item_data(item_data):
     # Parse the JSON object
     parsed_data = json.loads(item_data)
+    
+    logging.CRITICAL(parsed_data)
 
     # Extracting ParsedText
     parsed_text = parsed_data["ParsedResults"][0]["ParsedText"]
