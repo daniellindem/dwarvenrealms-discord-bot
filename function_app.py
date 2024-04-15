@@ -333,6 +333,9 @@ def get_item_data(item_data):
                 data_ended = True
         if "Item Level" in line:
             item_level = line.split(' ')[-1]
+            if not "Equipment:" in parsed_text:
+                equipment_type = "Unknown"
+                data_started = True
         elif not item_level:
             item_name += f"{line} "
         elif "Equipment" in line:
