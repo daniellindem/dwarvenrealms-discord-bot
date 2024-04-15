@@ -397,21 +397,15 @@ def interact(raw_request):
                 'url': attachment_url,
                 'iscreatesearchablepdf': 'false',
                 'issearchablepdfhidetextlayer': 'false'}
-                files=[                ]
                 headers = {
                 'apikey': OCR_API_KEY
                 }
                 
-                ocr_response = requests.request("POST", ocr_url, headers=headers, data=payload, files=files)
+                ocr_response = requests.post(ocr_url, headers=headers, data=payload)
                 
                 logging.info(f"OCR response: {ocr_response}")
                 
                 
-
-                
-                
-
-                            
             case _:
                 message_content = "Unknown command"
 
