@@ -371,7 +371,8 @@ def get_item_data(item_data):
         ordered_data[key] = value
         stat_counter += 1
 
-    ordered_data["Item Mod"] = extracted_data["Item Mod"]
+    if extracted_data['Item Mod'] != '':
+        ordered_data["Item Mod"] = extracted_data["Item Mod"]
 
     return ordered_data
 
@@ -493,7 +494,9 @@ def interact(raw_request):
                 
                 logging.debug(item_data)
                 
-                message_content = format_item_details(item_data)
+                formatted_item_data = format_item_details(item_data)
+                
+                message_content = f"{formatted_item_data}\n\n[Image URL]({attachment_url})"
                 
                 
             case _:
