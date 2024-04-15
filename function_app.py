@@ -244,8 +244,6 @@ def format_item_details(item):
         details += f"**{key}:** {value}\n"
     return details
 
-
-
 def get_offhand_type(trinketmod, gobletmod, hornmod):
     offhands = ["Arcane Apocalypse","Chain Lightning","Spinning Blade","Eye of the Storm","Lightning Plasma","Delusions of Zelkor","Vortex","Dragon Flames","Ferocity of Wolves","Fire Orb","Arcane Orb","Carnage of Fire","Cracked Arcane Seed","Starblades","Fire Totem","Lightning Totem","Toxicity","Burning Shield","Rain of Fire","Electric Dragons","Arcane Totem","Blood Dragons","Fire Beam","Death Blades","Spark"]
     
@@ -374,6 +372,7 @@ def get_item_data(item_data):
 
     return ordered_data
 
+
 def send_discord_followup(request_body, content):
     """
     Sends a follow-up message to a Discord channel.
@@ -407,11 +406,30 @@ def send_discord_followup(request_body, content):
     except requests.exceptions.RequestException as e:
         logging.error(f"Error sending Discord follow-up: {e}")
         return f"Error sending Discord follow-up: {e}"
+    
+    
+def get_image_text(image_url):
+    ocr_url = "https://api.ocr.space/parse/image"
+                
+    payload={'language': 'eng',
+    'isOverlayRequired': 'false',
+    'url': image_url,
+    'iscreatesearchablepdf': 'false',
+    'issearchablepdfhidetextlayer': 'false'}
+    headers = {
+    'apikey': OCR_API_KEY
+    }
+    
+    ocr_response = requests.post(ocr_url, headers=headers, data=payload)
+    
+    body = ocr_response.text.replace('\\r\\n', '_BREAK_')
+    
+    return body
         
         
 def interact(raw_request):
     try:
-        logging.info("Processing body: %s", raw_request)
+        #logging.info("Processing body: %s", raw_request) #potentially sensitive
         data = raw_request.get("data", {})
         command_name = data.get("name", "")
 
@@ -466,20 +484,7 @@ def interact(raw_request):
                 
                 logging.debug(f"Attachment URL: {attachment_url}")
                 
-                ocr_url = "https://api.ocr.space/parse/image"
-                
-                payload={'language': 'eng',
-                'isOverlayRequired': 'false',
-                'url': attachment_url,
-                'iscreatesearchablepdf': 'false',
-                'issearchablepdfhidetextlayer': 'false'}
-                headers = {
-                'apikey': OCR_API_KEY
-                }
-                
-                ocr_response = requests.post(ocr_url, headers=headers, data=payload)
-                
-                body = ocr_response.text.replace('\\r\\n', '_BREAK_')
+                body = get_image_text(attachment_url)
 
                 item_data = get_item_data(body)
                 
