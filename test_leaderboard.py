@@ -45,29 +45,80 @@ def get_user_characters(username: str):
     
 def format_character_info_base(highest_characters):
     highest_characters_sorted = sorted(highest_characters, key=lambda x: int(x["character_info"]["raptureLevel"]), reverse=True)
-    #print(highest_characters_sorted)
     message = ""
     for character in highest_characters_sorted:
+        build = character["character_info"]["build"]
+        offhand = get_offhand_type(build["trinketMod"], build["gobletMod"], build["hornMod"])
         if character["leaderboard_type"] == "Hardcore":
             if character["character_info"]["deaths"] == "0":
                 alive_status = "Alive"
             else:
                 alive_status = "Dead"
             message += f"""**Name:** {character["character_info"]["name"]}
-**Rapture Level:** {character["character_info"]["raptureLevel"]}
+**Highest Rupture:** {character["character_info"]["raptureLevel"]}
+**Level:** {character["character_info"]["level"]}
+**Offhand:** {offhand if offhand else "Unknown"}
 **Ranking:** {character["ranking"]}
 **Leaderboard:** {character["leaderboard_type"]}
 **Status:** {alive_status}
-**ID:** {character["character_info"]["id"]}
 \n"""
         else:
             message += f"""**Name:** {character["character_info"]["name"]}
-**Rapture Level:** {character["character_info"]["raptureLevel"]}
+**Highest Rupture:** {character["character_info"]["raptureLevel"]}
+**Level:** {character["character_info"]["level"]}
+**Offhand:** {offhand if offhand else "Unknown"}
+**Deaths:** {character["character_info"]["deaths"]}
 **Ranking:** {character["ranking"]}
 **Leaderboard:** {character["leaderboard_type"]}
-**ID:** {character["character_info"]["id"]}
 \n"""
     return message
+
+
+def get_offhand_type(trinketmod, gobletmod, hornmod):
+    offhands = [
+        "Arcane Apocalypse",
+        "Chain Lightning",
+        "Spinning Blade",
+        "Eye of the Storm",
+        "Lightning Plasma",
+        "Delusions of Zelkor",
+        "Vortex",
+        "Dragon Flames",
+        "Ferocity of Wolves",
+        "Fire Orb",
+        "Arcane Orb",
+        "Carnage of Fire",
+        "Cracked Arcane Seed",
+        "Starblades",
+        "Fire Totem",
+        "Lightning Totem",
+        "Toxicity",
+        "Burning Shield",
+        "Rain of Fire",
+        "Electric Dragons",
+        "Arcane Totem",
+        "Blood Dragons",
+        "Fire Beam",
+        "Death Blades",
+        "Spark"
+    ]
+    
+    offhand_counts = {}
+    for offhand in offhands:
+        offhand_counts[offhand] = 0
+
+    for mod in [trinketmod.lower(), gobletmod.lower(), hornmod.lower()]:
+        for offhand in offhands:
+            if offhand.lower() in mod:
+                offhand_counts[offhand] += 1
+    
+    for offhand, count in offhand_counts.items():
+        if count >= 2:
+            return offhand
+    
+    return None
+
+
 
 
 def leaderboard_lookup(username: str, info_details: str = None) -> str:
@@ -99,3 +150,6 @@ def leaderboard_lookup(username: str, info_details: str = None) -> str:
         message = format_character_info_base(highest_characters)
         #print(message)
         return message
+
+
+print(leaderboard_lookup("flowgon"))
